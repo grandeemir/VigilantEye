@@ -1,7 +1,12 @@
-ThreatIntelApp
+VigilantEye ThreatIntel App
 ================
 
+<div align="center">
+<img width="150" height="150" alt="vigilantyey-Photoroom-150x150" src="https://github.com/user-attachments/assets/2de473f1-848a-4ee9-815e-efdf827ce10f" />
+
 Simple terminal threat intelligence aggregator using VirusTotal and AbuseIPDB.
+</div>
+
 
 Setup
 -----
