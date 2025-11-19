@@ -311,6 +311,12 @@ def format_and_display(resource: str, rtype: str, enriched: dict, json_output: b
                 cat_list = [f"{k}: {v}" for k, v in list(categories.items())[:5]]
                 details_tbl.add_row("Categories", "\n".join(cat_list))
             
+            votes = vt.get("votes")
+            if votes and isinstance(votes, dict):
+                malicious_votes = votes.get("malicious", 0)
+                harmless_votes = votes.get("harmless", 0)
+                details_tbl.add_row("Community Votes", f"Malicious: {malicious_votes}, Harmless: {harmless_votes}")
+            
             whois = vt.get("whois")
             if whois:
                 details_tbl.add_row("WHOIS Data", str(whois)[:80])
@@ -499,6 +505,11 @@ def format_and_display(resource: str, rtype: str, enriched: dict, json_output: b
                 mw_tbl.add_row("Last Submission", str(last_submission))
             
             console.print(mw_tbl)
+
+
+if __name__ == "__main__":
+    console.print("core.utils module for ThreatIntelApp")
+
 
 
 if __name__ == "__main__":

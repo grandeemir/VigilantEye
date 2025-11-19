@@ -1,2 +1,2 @@
 [console_scripts]
-vigilanteye = cli:main
+vigilanteye = core.runner:main
