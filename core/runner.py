@@ -7,14 +7,19 @@ Usage:
 import argparse
 import os
 import sys
-import random  # Added for dynamic color changes
 from dotenv import load_dotenv
 from rich.console import Console
 from rich.panel import Panel
 
 from core.utils import detect_input_type, cache_get, cache_set, format_and_display
 from core import collector
-from languages import get_text  # Removed multi-language support
+try:
+    from languages import get_text
+except ImportError:
+    # Fallback if languages module can't be imported directly
+    import sys
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from languages import get_text
 
 load_dotenv()
 
@@ -24,29 +29,18 @@ ABUSE_KEY = os.getenv("ABUSEIPDB_API_KEY")
 console = Console()
 LANG = "en"  # Default to English
 
-def get_random_color():
-    colors = ["red", "green", "yellow", "blue", "magenta", "cyan", "white", "bright_red", "bright_green", "bright_yellow", "bright_blue", "bright_magenta", "bright_cyan", "bright_white"]
-    return random.choice(colors)
-
 def print_logo():
+    """Print VigilantEye logo without any color or styling"""
     logo = """
-    
-▐▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▌
-▐ ██▒   █▓ ██▓  ▄████  ██▓ ██▓    ▄▄▄       ███▄    █ ▄▄▄█████▓▓█████▓██   ██▓▓█████ ▌
-▐▓██░   █▒▓██▒ ██▒ ▀█▒▓██▒▓██▒   ▒████▄     ██ ▀█   █ ▓  ██▒ ▓▒▓█   ▀ ▒██  ██▒▓█   ▀ ▌
-▐ ▓██  █▒░▒██▒▒██░▄▄▄░▒██▒▒██░   ▒██  ▀█▄  ▓██  ▀█ ██▒▒ ▓██░ ▒░▒███    ▒██ ██░▒███   ▌
-▐  ▒██ █░░░██░░▓█  ██▓░██░▒██░   ░██▄▄▄▄██ ▓██▒  ▐▌██▒░ ▓██▓ ░ ▒▓█  ▄  ░ ▐██▓░▒▓█  ▄ ▌
-▐   ▒▀█░  ░██░░▒▓███▀▒░██░░██████▒▓█   ▓██▒▒██░   ▓██░  ▒██▒ ░ ░▒████▒ ░ ██▒▓░░▒████▒▌
-▐   ░ ▐░  ░▓   ░▒   ▒ ░▓  ░ ▒░▓  ░▒▒   ▓▒█░░ ▒░   ▒ ▒   ▒ ░░   ░░ ▒░ ░  ██▒▒▒ ░░ ▒░ ░▌
-▐   ░ ░░   ▒ ░  ░   ░  ▒ ░░ ░ ▒  ░ ▒   ▒▒ ░░ ░░   ░ ▒░    ░     ░ ░  ░▓██ ░▒░  ░ ░  ░▌
-▐     ░░   ▒ ░░ ░   ░  ▒ ░  ░ ░    ░   ▒      ░   ░ ░   ░         ░   ▒ ▒ ░░     ░   ▌
-▐      ░   ░        ░  ░      ░  ░     ░  ░         ░             ░  ░░ ░        ░  ░▌
-▐     ░                                                               ░ ░            ▌
-▐▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▌
-
+ __     ___       _ _             _   _____           
+ \ \   / (_) __ _(_) | __ _ _ __ | |_| ____|   _  ___ 
+  \ \ / /| |/ _` | | |/ _` | '_ \| __|  _|| | | |/ _ \\
+   \ V / | | (_| | | | (_| | | | | |_| |__| |_| |  __/
+    \_/  |_|\__, |_|_|\__,_|_| |_|\__|_____\__, |\___|
+            |___/                          |___/      
     """
-    color = get_random_color()
-    console.print(logo, style=f"bold {color}")
+
+    print(logo)
 
 def show_help(full=False):
     """Show help in selected language"""

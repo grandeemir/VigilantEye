@@ -20,7 +20,7 @@ async def async_query_urlhaus(session: aiohttp.ClientSession, url: str) -> Dict[
     params = {"url": url}
     
     try:
-        async with session.get(endpoint, params=params, timeout=20) as resp:
+        async with session.get(endpoint, params=params) as resp:
             text = await resp.text()
             if resp.status >= 400:
                 return {"error": f"HTTP {resp.status}", "status": resp.status}
@@ -59,7 +59,7 @@ async def async_query_malwarebazaar(session: aiohttp.ClientSession, query_type: 
     }
     
     try:
-        async with session.post(endpoint, data=data, timeout=20) as resp:
+        async with session.post(endpoint, data=data) as resp:
             text = await resp.text()
             if resp.status >= 400:
                 return {"error": f"HTTP {resp.status}", "status": resp.status}

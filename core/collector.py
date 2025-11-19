@@ -23,17 +23,21 @@ async def gather_enrichment(resource: str, rtype: str) -> Dict[str, Any]:
     async with aiohttp.ClientSession() as session:
         tasks = {}
 
-        # VirusTotal
-        tasks['vt'] = asyncio.create_task(vt.async_query_virus_total(session, resource, rtype, env.VT_KEY))
-
+        # VirusTotal - use sync version due to aiohttp + nest_asyncio compat issues
+        from core.vt import _query_virus_total_sync
+        vt_result = _query_virus_total_sync(resource, rtype, env.VT_KEY)
+        tasks['vt'] = asyncio.sleep(0)  # Dummy task
+        
         # AbuseIPDB for IPs, or resolve domain to IP
         abuse_ip = None
         if rtype == 'ip':
             abuse_ip = resource
         elif rtype == 'domain':
             # Try to resolve domain to IP for abuse lookup
-            loop = asyncio.get_event_loop()
-            abuse_ip = await loop.run_in_executor(None, _resolve_domain_to_ip, resource)
+            try:
+                abuse_ip = _resolve_domain_to_ip(resource)
+            except Exception:
+                abuse_ip = None
 
         if abuse_ip:
             tasks['abuse'] = asyncio.create_task(abuseipdb.async_query_abuseipdb(session, abuse_ip, env.ABUSE_KEY))
@@ -51,8 +55,10 @@ async def gather_enrichment(resource: str, rtype: str) -> Dict[str, Any]:
         elif rtype == 'hash':
             tasks['malwarebazaar'] = asyncio.create_task(abuse_ch.async_query_malwarebazaar(session, 'hash', resource, env.MALWAREBAZAAR_KEY))
 
-        results = {}
+        results = {'vt': vt_result}
         for name, task in tasks.items():
+            if name == 'vt':
+                continue
             try:
                 results[name] = await task
             except Exception as e:
@@ -88,5 +94,18 @@ async def gather_enrichment(resource: str, rtype: str) -> Dict[str, Any]:
 
 
 def enrich(resource: str, rtype: str) -> Dict[str, Any]:
-    loop = asyncio.get_event_loop()
-    return loop.run_until_complete(gather_enrichment(resource, rtype))
+    try:
+        loop = asyncio.get_running_loop()
+        # If we're already in a running loop, use nest_asyncio
+        import nest_asyncio
+        nest_asyncio.apply()
+    except RuntimeError:
+        # No loop running, create a new one
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+    
+    try:
+        return loop.run_until_complete(gather_enrichment(resource, rtype))
+    finally:
+        if not asyncio.get_event_loop().is_running():
+            loop.close()

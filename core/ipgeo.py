@@ -14,7 +14,7 @@ async def async_query_ipinfo(session: aiohttp.ClientSession, ip: str) -> Dict[st
     if IPINFO_KEY:
         params["token"] = IPINFO_KEY
     try:
-        async with session.get(url, params=params, timeout=10) as resp:
+        async with session.get(url, params=params) as resp:
             if resp.status >= 400:
                 return {"error": f"HTTP {resp.status}"}
             return await resp.json()
@@ -27,7 +27,7 @@ async def async_query_ipinfo(session: aiohttp.ClientSession, ip: str) -> Dict[st
 async def async_query_ipapi(session: aiohttp.ClientSession, ip: str) -> Dict[str, Any]:
     url = f"https://ipapi.co/{ip}/json/"
     try:
-        async with session.get(url, timeout=10) as resp:
+        async with session.get(url) as resp:
             if resp.status >= 400:
                 return {"error": f"HTTP {resp.status}"}
             return await resp.json()

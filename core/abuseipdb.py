@@ -13,10 +13,10 @@ async def async_query_abuseipdb(session: aiohttp.ClientSession, ip: str, api_key
         return {"error": "missing_api_key"}
 
     check_url = "https://api.abuseipdb.com/api/v2/check"
-    headers = {"Accept": "application/json", "Key": api_key, "X-API-Key": api_key}
+    headers = {"Accept": "application/json", "Key": f"x-apikey:{api_key}"}
     params = {"ipAddress": ip, "maxAgeInDays": max_age_days}
     try:
-        async with session.get(check_url, headers=headers, params=params, timeout=20) as resp:
+        async with session.get(check_url, headers=headers, params=params) as resp:
             text = await resp.text()
             if resp.status >= 400:
                 return {"error": f"HTTP {resp.status}", "status": resp.status, "text": text}
@@ -47,7 +47,7 @@ async def async_query_abuseipdb(session: aiohttp.ClientSession, ip: str, api_key
         reports_url = "https://api.abuseipdb.com/api/v2/reports"
         params_reports = {"ip": ip}
         try:
-            async with session.get(reports_url, headers=headers, params=params_reports, timeout=20) as r2:
+            async with session.get(reports_url, headers=headers, params=params_reports) as r2:
                 if r2.status == 200:
                     repj = await r2.json()
                     result["reports"] = repj.get("data") or repj.get("reports")

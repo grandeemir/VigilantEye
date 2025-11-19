@@ -1,141 +1,108 @@
 <div align="center">
-  
-VigilantEye ThreatIntel App
-================
+
+VigilantEye — Terminal Threat Intelligence Aggregator
 
 </div>
 
+VigilantEye collects and enriches threat intelligence from multiple sources (VirusTotal, abuse.ch's URLhaus and MalwareBazaar, AbuseIPDB, WHOIS and IP geolocation services) and presents results in short/detailed human-readable views or machine-friendly JSON.
 
-▐▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▌
-▐ ██▒   █▓ ██▓  ▄████  ██▓ ██▓    ▄▄▄       ███▄    █ ▄▄▄█████▓▓█████▓██   ██▓▓█████ ▌
-▐▓██░   █▒▓██▒ ██▒ ▀█▒▓██▒▓██▒   ▒████▄     ██ ▀█   █ ▓  ██▒ ▓▒▓█   ▀ ▒██  ██▒▓█   ▀ ▌
-▐ ▓██  █▒░▒██▒▒██░▄▄▄░▒██▒▒██░   ▒██  ▀█▄  ▓██  ▀█ ██▒▒ ▓██░ ▒░▒███    ▒██ ██░▒███   ▌
-▐  ▒██ █░░░██░░▓█  ██▓░██░▒██░   ░██▄▄▄▄██ ▓██▒  ▐▌██▒░ ▓██▓ ░ ▒▓█  ▄  ░ ▐██▓░▒▓█  ▄ ▌
-▐   ▒▀█░  ░██░░▒▓███▀▒░██░░██████▒▓█   ▓██▒▒██░   ▓██░  ▒██▒ ░ ░▒████▒ ░ ██▒▓░░▒████▒▌
-▐   ░ ▐░  ░▓   ░▒   ▒ ░▓  ░ ▒░▓  ░▒▒   ▓▒█░░ ▒░   ▒ ▒   ▒ ░░   ░░ ▒░ ░  ██▒▒▒ ░░ ▒░ ░▌
-▐   ░ ░░   ▒ ░  ░   ░  ▒ ░░ ░ ▒  ░ ▒   ▒▒ ░░ ░░   ░ ▒░    ░     ░ ░  ░▓██ ░▒░  ░ ░  ░▌
-▐     ░░   ▒ ░░ ░   ░  ▒ ░  ░ ░    ░   ▒      ░   ░ ░   ░         ░   ▒ ▒ ░░     ░   ▌
-▐      ░   ░        ░  ░      ░  ░     ░  ░         ░             ░  ░░ ░        ░  ░▌
-▐     ░                                                               ░ ░            ▌
-▐▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▌
+**📖 [Quick Installation Guide →](INSTALL.md)**
 
+**Quick Start**
 
-<div align="center">
-Simple terminal threat intelligence aggregator using VirusTotal, MalwareBazaar, URLHaus, and AbuseIPDB.
-</div>
+- **Requirements:** Python 3.8+ and `pip`.
 
+**One-Command Setup**
 
-Setup
------
+Choose the script for your operating system:
 
-1. Create a virtual environment and install dependencies:
-
+**macOS / Linux:**
 ```sh
-python -m venv .venv
-. .venv/bin/activate
-pip install -r requirements.txt
+chmod +x install.sh
+./install.sh
 ```
 
-2. Copy `.env.example` to `.env` and populate the API keys.
+**Windows (PowerShell/Command Prompt):**
+```cmd
+install.bat
+```
 
-Usage
------
+The script will:
+1. Check Python installation
+2. Create a virtual environment
+3. Install all dependencies
+4. Create `.env` file from `.env.example`
 
-### Quick Start
+After installation, edit `.env` with your API keys (VirusTotal, AbuseIPDB, optional MalwareBazaar).
 
-Run the app with the `vigilanteye` command:
+Then activate and test:
 
 ```sh
-# Display help with language selection
-vigilanteye --help
+source .venv/bin/activate    # macOS/Linux
+# or .venv\Scripts\activate.bat  # Windows
 
-# Basic usage - will prompt for language selection (en, tr, de)
 vigilanteye 8.8.8.8
-
-# Interactive mode (prompt for queries)
-vigilanteye --interactive
-
-# JSON output (full enriched data with all fields)
-vigilanteye 8.8.8.8 --json
-
-# Detailed view (all available details from each source)
-vigilanteye 8.8.8.8 --detailed
-
-# Test with URL (URLhaus, VirusTotal)
-vigilanteye "https://www.google.com" --detailed
-
-# Test with hash (VirusTotal, Malware Bazaar)
-vigilanteye "9f2b267b8e986d5edc2d00df3d1a1d55" --detailed
-
-# Combine flags
-vigilanteye google.com --detailed --json
 ```
 
-### Multi-Language Support
+**Usage (CLI)**
 
-When you run `vigilanteye`, you'll be prompted to select your language:
+- Show help: `vigilanteye --help`
+- Basic query (prompts for language selection): `vigilanteye 8.8.8.8`
+- Interactive mode: `vigilanteye --interactive`
+- JSON output: `vigilanteye 8.8.8.8 --json`
+- Detailed output: `vigilanteye 8.8.8.8 --detailed`
+- URL test: `vigilanteye "https://example.com" --detailed`
+- Hash test: `vigilanteye "9f2b267b8e986d5edc2d00df3d1a1d55" --detailed`
 
-```
-Select your language / Dil seçiniz / Wählen Sie Ihre Sprache:
-[en] English
-[tr] Türkçe
-[de] Deutsch
-Choice: 
-```
+The tool resolves domains to IPs for IP-based lookups (AbuseIPDB), routes URL checks to URLhaus, and sends hashes to VirusTotal / MalwareBazaar where applicable.
 
-Simply enter:
-- **en** for English
-- **tr** for Türkçe (Turkish)
-- **de** for Deutsch (German)
-
-All help messages and interface text will be displayed in your selected language!
-
-**Detailed Mode Includes:**
-- VirusTotal Details tab with analysis date, categories, community votes
-- Per-engine verdicts table (top 20 engines sorted by threat level)
-- AbuseIPDB additional details (whitelist status, last reported date, hostnames)
-- AbuseIPDB detailed reports table with timestamps and categories
-- WHOIS full details (registrar, dates, name servers, emails, status)
-- URLhaus details (URL status, threat types, payloads) - for URLs
-- Malware Bazaar details (file metadata, hashes, tags, dates) - for hashes
-
-Streamlit dashboard:
+**Optional: Streamlit Dashboard**
 
 ```sh
 streamlit run dashboard.py
 ```
 
-Features
---------
+**Key Features**
 
-- **VirusTotal Integration**: 
-  - Last analysis stats (malicious/suspicious/undetected/harmless counts)
-  - Per-engine verdicts with detection categories
-  - Reputation score and tags
-  - Country, ASN, network owner
-  - **Details Tab**: Last analysis date, categories (community classification), community votes, WHOIS data
-- **AbuseIPDB Integration**: 
-  - Abuse confidence score, total reports, ISP, usage type, country
-  - Detailed abuse report list with timestamps and categories
-  - **Additional Details**: Whitelisted status, last reported date, hostnames, domain information
-- **abuse.ch Integration** (URLhaus, Malware Bazaar):
-  - **URLhaus**: Detect malicious URLs, last online status, threat types, payloads (no API key needed)
-  - **Malware Bazaar**: Hash-based malware detection, file metadata, tags, submission dates (optional API key)
-- **IP Geolocation**: City, region, country, organization (via ipinfo.io/ipapi.co)
-- **WHOIS Enrichment**: 
-  - Registrar, creation date, expiration date
-  - Name servers (all), contact emails (all)
-  - Domain status, updated date
-- **Domain Resolution**: Automatically resolve domains to IPs for AbuseIPDB lookup
-- **Parallel API Calls**: Async requests for fast enrichment
-- **Local Caching**: Avoid redundant API calls (1-hour TTL)
-- **Detailed Reporting**: 
-  - VirusTotal Details tab with analysis date, categories, community votes
-  - Per-engine verdicts table (top 20 engines sorted by threat level)
-  - AbuseIPDB detailed reports table with timestamps and categories
-  - AbuseIPDB additional details (whitelist status, hostnames, domain)
-  - WHOIS full details (registrar, dates, name servers, emails, status)
-  - URLhaus details (status, threat types, payloads)
-  - Malware Bazaar details (file metadata, hashes, tags, submission dates)
-- **Risk Scoring**: Combined threat score from multiple sources
+- **VirusTotal integration:** analysis summaries, per-engine verdicts, tags, reputation and detailed results.
+- **AbuseIPDB integration:** abuse confidence score, total reports, ISP, usage type and detailed report list.
+- **abuse.ch (URLhaus & MalwareBazaar):** malicious URL and file indicators; URLhaus payload and status info.
+- **WHOIS & IP geolocation:** registrar, dates, nameservers, contact emails, and geo/ASN info.
+- **Domain resolution:** automatic domain -> IP resolution for relevant lookups.
+- **Parallel async calls:** fast data collection using asynchronous requests.
+- **Local caching:** reduces repeated API calls with a 1-hour TTL.
+- **Output modes:** short, detailed human-readable views and machine-friendly JSON.
+- **Risk scoring:** a combined threat score derived from multiple sources (heuristic).
+
+**Configuration**
+
+- Store API keys and environment configuration in `.env`. See `.env.example` for expected variables.
+
+**Developer Notes**
+
+- Command-line interface supports multiple languages (`en`, `tr`, `de`) and prompts for language selection on first run.
+- Project layout: integrations live under `core/` (`abuseipdb.py`, `vt.py`, `abuse_ch.py`, `whois.py`, `ipgeo.py`) and the runner/CLI logic is implemented in `runner.py`.
+
+**Quick Examples**
+
+```sh
+# Basic IP query
+vigilanteye 8.8.8.8
+
+# Detailed JSON output for a domain
+vigilanteye example.com --detailed --json
+
+# Start the dashboard
+streamlit run dashboard.py
+```
+
+**Contributing**
+
+PRs are welcome. Please open an issue first or check existing issues before submitting major changes.
+
+**License**
+
+See the repository `LICENSE` file for license details.
+
+---
 
