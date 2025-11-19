@@ -19,14 +19,77 @@ pip install -r requirements.txt
 Usage
 -----
 
-Run the app and pass an IP/domain/URL/hash, or run without args to be prompted:
+Run the app and pass an IP/domain/URL/hash:
 
 ```sh
-python main.py 8.8.8.8
-python main.py --interactive
+# Basic usage (summary table with all sources)
+python app.py 8.8.8.8
+
+# Interactive mode (prompt for queries)
+python app.py --interactive
+
+# JSON output (full enriched data with all fields)
+python app.py 8.8.8.8 --json
+
+# Detailed view (all available details from each source)
+python app.py 8.8.8.8 --detailed
+
+# Test with URL (URLhaus, VirusTotal)
+python app.py "https://www.google.com" --detailed
+
+# Test with hash (VirusTotal, Malware Bazaar)
+python app.py "9f2b267b8e986d5edc2d00df3d1a1d55" --detailed
+
+# Combine flags
+python app.py google.com --detailed --json
 ```
 
-Example
--------
+**Detailed Mode Includes:**
+- VirusTotal Details tab with analysis date, categories, community votes
+- Per-engine verdicts table (top 20 engines sorted by threat level)
+- AbuseIPDB additional details (whitelist status, last reported date, hostnames)
+- AbuseIPDB detailed reports table with timestamps and categories
+- WHOIS full details (registrar, dates, name servers, emails, status)
+- URLhaus details (URL status, threat types, payloads) - for URLs
+- Malware Bazaar details (file metadata, hashes, tags, dates) - for hashes
 
-Query an IP and get a summarized report in the terminal.
+Streamlit dashboard:
+
+```sh
+streamlit run dashboard.py
+```
+
+Features
+--------
+
+- **VirusTotal Integration**: 
+  - Last analysis stats (malicious/suspicious/undetected/harmless counts)
+  - Per-engine verdicts with detection categories
+  - Reputation score and tags
+  - Country, ASN, network owner
+  - **Details Tab**: Last analysis date, categories (community classification), community votes, WHOIS data
+- **AbuseIPDB Integration**: 
+  - Abuse confidence score, total reports, ISP, usage type, country
+  - Detailed abuse report list with timestamps and categories
+  - **Additional Details**: Whitelisted status, last reported date, hostnames, domain information
+- **abuse.ch Integration** (URLhaus, Malware Bazaar):
+  - **URLhaus**: Detect malicious URLs, last online status, threat types, payloads (no API key needed)
+  - **Malware Bazaar**: Hash-based malware detection, file metadata, tags, submission dates (optional API key)
+- **IP Geolocation**: City, region, country, organization (via ipinfo.io/ipapi.co)
+- **WHOIS Enrichment**: 
+  - Registrar, creation date, expiration date
+  - Name servers (all), contact emails (all)
+  - Domain status, updated date
+- **Domain Resolution**: Automatically resolve domains to IPs for AbuseIPDB lookup
+- **Parallel API Calls**: Async requests for fast enrichment
+- **Local Caching**: Avoid redundant API calls (1-hour TTL)
+- **Detailed Reporting**: 
+  - VirusTotal Details tab with analysis date, categories, community votes
+  - Per-engine verdicts table (top 20 engines sorted by threat level)
+  - AbuseIPDB detailed reports table with timestamps and categories
+  - AbuseIPDB additional details (whitelist status, hostnames, domain)
+  - WHOIS full details (registrar, dates, name servers, emails, status)
+  - URLhaus details (status, threat types, payloads)
+  - Malware Bazaar details (file metadata, hashes, tags, submission dates)
+- **Risk Scoring**: Combined threat score from multiple sources
+
