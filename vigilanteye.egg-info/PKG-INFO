@@ -9,6 +9,7 @@ Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
 Requires-Python: >=3.7
 Description-Content-Type: text/markdown
+License-File: LICENCE
 Requires-Dist: rich
 Requires-Dist: aiohttp
 Requires-Dist: requests
@@ -20,13 +21,14 @@ Dynamic: classifier
 Dynamic: description
 Dynamic: description-content-type
 Dynamic: home-page
+Dynamic: license-file
 Dynamic: requires-dist
 Dynamic: requires-python
 Dynamic: summary
 
 <div align="center">
 
-VigilantEye — Terminal Threat Intelligence Aggregator
+# VigilantEye — Terminal Threat Intelligence Aggregator
 
 </div>
 

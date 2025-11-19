@@ -20,7 +20,7 @@ Choose the script for your operating system:
 ```sh
 chmod +x install.sh
 ./install.sh
-```
+``
 
 **Windows (PowerShell/Command Prompt):**
 ```cmd
@@ -43,6 +43,34 @@ source .venv/bin/activate    # macOS/Linux
 
 vigilanteye 8.8.8.8
 ```
+
+### If you don't want to write this code every time, you should also run this code.
+
+** MacOs/Linux
+
+```sh
+echo "source $PWD/.venv/bin/activate" >> ~/.zshrc
+```
+
+** Windows
+
+```sh
+@echo off
+call .venv\Scripts\activate.bat
+vigilanteye %*
+```
+### also for windows
+
+You can make the vigilanteye command globally executable by adding this file to PATH.
+Adding to PATH
+vigilanteye.batTo add the vigilanteye.bat file to PATH, follow these steps:
+vigilanteye.batSave the vigilanteye.bat file to a directory (e.g., C:\VigilantEye).
+To add this directory to PATH:
+Open the “Environment Variables” settings from the Start menu.
+Under “System Variables,” edit the “Path” option.
+Add the C:\VigilantEye directory.
+
+---
 
 **Usage (CLI)**
 

@@ -1,3 +1,4 @@
+LICENCE
 README.md
 setup.py
 config/__init__.py
