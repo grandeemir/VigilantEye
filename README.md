@@ -1,6 +1,6 @@
 <div align="center">
 
-VigilantEye — Terminal Threat Intelligence Aggregator
+# VigilantEye — Terminal Threat Intelligence Aggregator
 
 </div>
 
