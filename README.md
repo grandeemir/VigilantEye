@@ -2,6 +2,9 @@
 
 # VigilantEye — Terminal Threat Intelligence Aggregator
 
+![vigilanteye](assets/ascii-art-text-2.png)
+
+
 </div>
 
 VigilantEye collects and enriches threat intelligence from multiple sources (VirusTotal, abuse.ch's URLhaus and MalwareBazaar, AbuseIPDB, WHOIS and IP geolocation services) and presents results in short/detailed human-readable views or machine-friendly JSON.
