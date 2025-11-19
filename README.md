@@ -3,7 +3,22 @@
 VigilantEye ThreatIntel App
 ================
 
-<img width="150" height="150" alt="vigilantyey-Photoroom-150x150" src="https://github.com/user-attachments/assets/2de473f1-848a-4ee9-815e-efdf827ce10f" />
+
+
+▐▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▌
+▐ ██▒   █▓ ██▓  ▄████  ██▓ ██▓    ▄▄▄       ███▄    █ ▄▄▄█████▓▓█████▓██   ██▓▓█████ ▌
+▐▓██░   █▒▓██▒ ██▒ ▀█▒▓██▒▓██▒   ▒████▄     ██ ▀█   █ ▓  ██▒ ▓▒▓█   ▀ ▒██  ██▒▓█   ▀ ▌
+▐ ▓██  █▒░▒██▒▒██░▄▄▄░▒██▒▒██░   ▒██  ▀█▄  ▓██  ▀█ ██▒▒ ▓██░ ▒░▒███    ▒██ ██░▒███   ▌
+▐  ▒██ █░░░██░░▓█  ██▓░██░▒██░   ░██▄▄▄▄██ ▓██▒  ▐▌██▒░ ▓██▓ ░ ▒▓█  ▄  ░ ▐██▓░▒▓█  ▄ ▌
+▐   ▒▀█░  ░██░░▒▓███▀▒░██░░██████▒▓█   ▓██▒▒██░   ▓██░  ▒██▒ ░ ░▒████▒ ░ ██▒▓░░▒████▒▌
+▐   ░ ▐░  ░▓   ░▒   ▒ ░▓  ░ ▒░▓  ░▒▒   ▓▒█░░ ▒░   ▒ ▒   ▒ ░░   ░░ ▒░ ░  ██▒▒▒ ░░ ▒░ ░▌
+▐   ░ ░░   ▒ ░  ░   ░  ▒ ░░ ░ ▒  ░ ▒   ▒▒ ░░ ░░   ░ ▒░    ░     ░ ░  ░▓██ ░▒░  ░ ░  ░▌
+▐     ░░   ▒ ░░ ░   ░  ▒ ░  ░ ░    ░   ▒      ░   ░ ░   ░         ░   ▒ ▒ ░░     ░   ▌
+▐      ░   ░        ░  ░      ░  ░     ░  ░         ░             ░  ░░ ░        ░  ░▌
+▐     ░                                                               ░ ░            ▌
+▐▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▌
+
+
 
 Simple terminal threat intelligence aggregator using VirusTotal, MalwareBazaar, URLHaus, and AbuseIPDB.
 </div>
@@ -12,22 +27,15 @@ Simple terminal threat intelligence aggregator using VirusTotal, MalwareBazaar, 
 Setup
 -----
 
-### Installation
-
-1. Install from the source directory:
+1. Create a virtual environment and install dependencies:
 
 ```sh
-cd /path/to/VigilantEye_ThreatIntell
-pip install -e .
+python -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
 ```
 
 2. Copy `.env.example` to `.env` and populate the API keys.
-
-3. After installation, you can run `vigilanteye` from anywhere in your terminal!
-
-### First Run
-
-When you run `vigilanteye` for the first time, you'll be prompted to select your language (English, Türkçe, or Deutsch). Your choice will determine the language for all help messages and prompts.
 
 Usage
 -----
