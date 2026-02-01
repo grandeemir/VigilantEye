@@ -31,10 +31,10 @@ LANG = "en"  # Default to English
 
 def print_logo():
     """Print VigilantEye logo without any color or styling"""
-    logo = """
+    logo = r"""
  __     ___       _ _             _   _____           
  \ \   / (_) __ _(_) | __ _ _ __ | |_| ____|   _  ___ 
-  \ \ / /| |/ _` | | |/ _` | '_ \| __|  _|| | | |/ _ \\
+  \ \ / /| |/ _` | | |/ _` | '_ \| __|  _|| | | |/ _ \
    \ V / | | (_| | | | (_| | | | | |_| |__| |_| |  __/
     \_/  |_|\__, |_|_|\__,_|_| |_|\__|_____\__, |\___|
             |___/                          |___/      
@@ -50,16 +50,20 @@ def show_help(full=False):
     json_opt = "--json           Output results in JSON format"
     detailed = "--detailed       Show detailed information"
     help_opt = "--help           Show this help message"
+    destroy_opt = "--destroy        Uninstall VigilantEye from system"
 
     help_text = f"""
 {usage}
   cli_usage
+
+  You can also use the short alias: vg [OPTIONS] <RESOURCE>
 
 {options}
   {interactive}
   {json_opt}
   {detailed}
   {help_opt}
+  {destroy_opt}
 """
 
     if full:
@@ -77,15 +81,16 @@ def show_help(full=False):
 
 {examples}
   vigilanteye 8.8.8.8                    
+  vg 8.8.8.8                              (short alias)
   vigilanteye 8.8.8.8 --detailed
-  vigilanteye 8.8.8.8 --detailed --json
+  vg 8.8.8.8 --detailed --json
   vigilanteye https://example.com
-  vigilanteye 9f2b267b8e986d5edc2d00df3d1a1d55 --detailed
+  vg 9f2b267b8e986d5edc2d00df3d1a1d55 --detailed
   vigilanteye google.com --json
-  vigilanteye --interactive
+  vg --interactive
   vigilanteye --interactive --json
-  vigilanteye --interactive --detailed
-  vigilanteye --interactive --detailed --json
+  vg --interactive --detailed --json
+  vigilanteye --destroy                   (uninstall from system)
   
 
 
@@ -124,12 +129,28 @@ def main():
     parser.add_argument("--json", action="store_true", help="Print full JSON output")
     parser.add_argument("--detailed", action="store_true", help="Show detailed information")
     parser.add_argument("--help", "-h", action="store_true", help="Show help message")
+    parser.add_argument("--destroy", "-destroy", action="store_true", help="Uninstall VigilantEye from system")
     
     args = parser.parse_args()
 
     if args.help:
         show_help(full=True)
         sys.exit(0)
+
+    # Handle --destroy flag
+    if args.destroy:
+        uninstall_script = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "uninstall.sh")
+        if os.path.exists(uninstall_script):
+            import subprocess
+            print("Starting VigilantEye uninstall process...")
+            print("")
+            # Run uninstall script with --force flag for non-interactive mode
+            result = subprocess.run(["bash", uninstall_script, "--force"], check=False)
+            sys.exit(result.returncode)
+        else:
+            print("Error: uninstall.sh not found")
+            print("Please run: bash uninstall.sh")
+            sys.exit(1)
 
     if not args.resource and not args.interactive:
         show_help(full=False)
@@ -139,7 +160,7 @@ def main():
         prompt = get_text("en", "enter_indicator")
         resource = input(prompt).strip()
     else:
-        resource = args.resource.strip()
+        resource = args.resource.strip() if args.resource else None
 
     rtype = detect_input_type(resource)
     if rtype == "unknown":

@@ -23,7 +23,7 @@ Choose the script for your operating system:
 ```sh
 chmod +x install.sh
 ./install.sh
-``
+```
 
 **Windows (PowerShell/Command Prompt):**
 ```cmd
@@ -32,58 +32,43 @@ install.bat
 
 The script will:
 1. Check Python installation
-2. Create a virtual environment
-3. Install all dependencies
-4. Create `.env` file from `.env.example`
+2. Install all dependencies (system-wide or user-level)
+3. Install wrapper scripts (`vigilanteye` and `vg` commands)
+4. Configure PATH automatically
+5. Create `.env` file from `.env.example`
 
-After installation, edit `.env` with your API keys (VirusTotal, AbuseIPDB, optional MalwareBazaar).
+After installation, **restart your terminal** or run:
+```sh
+source ~/.zshrc    # for zsh
+# or
+source ~/.bashrc   # for bash
+```
 
-Then activate and test:
+Then edit `.env` with your API keys (VirusTotal, AbuseIPDB, optional MalwareBazaar) and test:
 
 ```sh
-source .venv/bin/activate    # macOS/Linux
-# or .venv\Scripts\activate.bat  # Windows
-
 vigilanteye 8.8.8.8
+# or use the short alias:
+vg 8.8.8.8
 ```
 
-### If you don't want to write this code every time, you should also run this code.
-
-** MacOs/Linux
-
-```sh
-echo "source $PWD/.venv/bin/activate" >> ~/.zshrc
-```
-
-** Windows
-
-```sh
-@echo off
-call .venv\Scripts\activate.bat
-vigilanteye %*
-```
-### also for windows
-
-You can make the vigilanteye command globally executable by adding this file to PATH.
-Adding to PATH
-vigilanteye.batTo add the vigilanteye.bat file to PATH, follow these steps:
-vigilanteye.batSave the vigilanteye.bat file to a directory (e.g., C:\VigilantEye).
-To add this directory to PATH:
-Open the “Environment Variables” settings from the Start menu.
-Under “System Variables,” edit the “Path” option.
-Add the C:\VigilantEye directory.
+**Note:** No virtual environment is required! The tool works system-wide.
 
 ---
 
 **Usage (CLI)**
 
-- Show help: `vigilanteye --help`
-- Basic query (prompts for language selection): `vigilanteye 8.8.8.8`
-- Interactive mode: `vigilanteye --interactive`
+You can use either `vigilanteye` or the short alias `vg`:
+
+- Show help: `vigilanteye --help` or `vg --help`
+- Basic query: `vigilanteye 8.8.8.8` or `vg 8.8.8.8`
+- Interactive mode: `vigilanteye --interactive` or `vg --interactive`
 - JSON output: `vigilanteye 8.8.8.8 --json`
 - Detailed output: `vigilanteye 8.8.8.8 --detailed`
+- Combined options: `vg 8.8.8.8 --detailed --json`
 - URL test: `vigilanteye "https://example.com" --detailed`
-- Hash test: `vigilanteye "9f2b267b8e986d5edc2d00df3d1a1d55" --detailed`
+- Hash test: `vg "9f2b267b8e986d5edc2d00df3d1a1d55" --detailed`
+- **Uninstall:** `vigilanteye --destroy` or `vg --destroy` (removes all components)
 
 The tool resolves domains to IPs for IP-based lookups (AbuseIPDB), routes URL checks to URLhaus, and sends hashes to VirusTotal / MalwareBazaar where applicable.
 
@@ -111,6 +96,10 @@ streamlit run dashboard.py
 
 **Developer Notes**
 
+- **No virtual environment required:** VigilantEye works system-wide using wrapper scripts.
+- **Commands:** Both `vigilanteye` and `vg` (short alias) are available after installation.
+- **Installation:** Uses wrapper scripts that automatically find the VigilantEye directory and set up Python paths.
+- **Uninstallation:** Use `vigilanteye --destroy` or `vg --destroy` to completely remove the tool.
 - Command-line interface supports multiple languages (`en`, `tr`, `de`) and prompts for language selection on first run.
 - Project layout: integrations live under `core/` (`abuseipdb.py`, `vt.py`, `abuse_ch.py`, `whois.py`, `ipgeo.py`) and the runner/CLI logic is implemented in `runner.py`.
 
@@ -119,13 +108,40 @@ streamlit run dashboard.py
 ```sh
 # Basic IP query
 vigilanteye 8.8.8.8
+# or
+vg 8.8.8.8
 
 # Detailed JSON output for a domain
 vigilanteye example.com --detailed --json
 
+# Interactive mode
+vg --interactive
+
+# Uninstall VigilantEye from system
+vigilanteye --destroy
+
 # Start the dashboard
 streamlit run dashboard.py
 ```
+
+**Uninstallation**
+
+To completely remove VigilantEye from your system:
+
+```sh
+vigilanteye --destroy
+# or
+vg --destroy
+# or manually:
+bash uninstall.sh
+```
+
+This will remove:
+- Wrapper scripts (`vigilanteye` and `vg` commands)
+- Python packages
+- Dependencies (optional)
+- Cache files
+- PATH entries
 
 **Contributing**
 

@@ -2,6 +2,8 @@
 
 This guide provides the fastest way to install and run VigilantEye on your system.
 
+**Note:** VigilantEye works system-wide without requiring a virtual environment!
+
 ## For macOS and Linux Users
 
 Open Terminal and run:
@@ -12,9 +14,11 @@ chmod +x install.sh
 ./install.sh
 ```
 
-Then activate the virtual environment:
+After installation, **restart your terminal** or run:
 ```bash
-source .venv/bin/activate
+source ~/.zshrc    # for zsh
+# or
+source ~/.bashrc   # for bash
 ```
 
 ## For Windows Users
@@ -25,6 +29,8 @@ Open Command Prompt or PowerShell and run:
 cd C:\path\to\VigilantEye
 install.bat
 ```
+
+After installation, **restart your terminal** or command prompt.
 
 ## Configuration
 
@@ -47,20 +53,29 @@ notepad .env
 
 ## Usage
 
-After setup and activation, you can immediately use VigilantEye:
+After installation, you can immediately use VigilantEye from anywhere in your terminal:
 
 ```bash
 # Show help
 vigilanteye --help
+# or use the short alias:
+vg --help
 
 # Basic threat check (IP, domain, URL, or hash)
 vigilanteye 8.8.8.8
+vg 8.8.8.8
 
 # Interactive mode
 vigilanteye --interactive
+vg --interactive
 
 # Detailed JSON output
 vigilanteye example.com --detailed --json
+vg example.com --detailed --json
+
+# Uninstall VigilantEye from system
+vigilanteye --destroy
+vg --destroy
 
 # Optional: Start the dashboard
 streamlit run dashboard.py
@@ -73,24 +88,46 @@ streamlit run dashboard.py
 - Windows: Make sure "Add Python to PATH" is checked during installation
 
 **pip install fails:**
-- Try: `pip install --upgrade pip` before running the script again
+- Try: `python3 -m pip install --upgrade pip` before running the script again
+- On Arch Linux: May need `--break-system-packages` flag (handled automatically by install script)
 - On Linux/Mac: May need `sudo` or use `python3 -m pip` instead
 
-**Virtual environment activation fails:**
-- macOS/Linux: Use `source .venv/bin/activate`
-- Windows: Use `.venv\Scripts\activate.bat`
+**Commands not found after installation:**
+- Restart your terminal or run: `source ~/.zshrc` (or `source ~/.bashrc`)
+- Check if `~/.local/bin` is in your PATH: `echo $PATH | grep .local/bin`
+- Manually add to PATH: `export PATH="$HOME/.local/bin:$PATH"` (add to ~/.zshrc or ~/.bashrc)
+
+**Arch Linux / externally-managed-environment error:**
+- The install script automatically handles this with `--break-system-packages` flag
+- If issues persist, run: `python3 -m pip install --user --break-system-packages -r requirements.txt`
 
 ## Next Steps
 
 1. Edit `.env` with your API keys
-2. Test with: `vigilanteye 8.8.8.8`
-3. Try detailed mode: `vigilanteye example.com --detailed`
-4. For dashboard: `streamlit run dashboard.py`
+2. Restart your terminal (or run `source ~/.zshrc` / `source ~/.bashrc`)
+3. Test with: `vigilanteye 8.8.8.8` or `vg 8.8.8.8`
+4. Try detailed mode: `vg example.com --detailed`
+5. For dashboard: `streamlit run dashboard.py`
+
+## Uninstallation
+
+To completely remove VigilantEye from your system:
+
+```bash
+vigilanteye --destroy
+# or
+vg --destroy
+# or manually:
+bash uninstall.sh
+```
+
+This removes all components including commands, packages, cache, and PATH entries.
 
 ## Support
 
 If you encounter issues:
 1. Check that Python 3.8+ is installed
 2. Ensure `.env` file has valid API keys
-3. Try reinstalling: Delete `.venv` folder and run the script again
-4. Check GitHub issues for known problems
+3. Try reinstalling: Run `./install.sh` again (no need to delete anything)
+4. Check that `~/.local/bin` is in your PATH
+5. Check GitHub issues for known problems

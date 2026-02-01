@@ -26,34 +26,8 @@ for /f "tokens=2" %%i in ('python --version 2^>^&1') do set PYTHON_VERSION=%%i
 echo [OK] Python !PYTHON_VERSION! found
 echo.
 
-REM Create virtual environment
-echo [2/5] Creating virtual environment...
-if exist ".venv" (
-    echo [OK] Virtual environment already exists
-) else (
-    python -m venv .venv
-    if errorlevel 1 (
-        echo [ERROR] Failed to create virtual environment
-        pause
-        exit /b 1
-    )
-    echo [OK] Virtual environment created
-)
-echo.
-
-REM Activate virtual environment
-echo [3/5] Activating virtual environment...
-call .venv\Scripts\activate.bat
-if errorlevel 1 (
-    echo [ERROR] Failed to activate virtual environment
-    pause
-    exit /b 1
-)
-echo [OK] Virtual environment activated
-echo.
-
 REM Upgrade pip
-echo [4/5] Upgrading pip, setuptools, and wheel...
+echo [2/4] Upgrading pip, setuptools, and wheel...
 python -m pip install --upgrade pip setuptools wheel >nul 2>&1
 if errorlevel 1 (
     echo [WARNING] pip upgrade had issues, continuing anyway...
@@ -63,7 +37,7 @@ if errorlevel 1 (
 echo.
 
 REM Install requirements
-echo [5/5] Installing dependencies...
+echo [3/4] Installing dependencies...
 pip install -r requirements.txt >nul 2>&1
 if errorlevel 1 (
     echo [ERROR] Failed to install dependencies
@@ -74,13 +48,15 @@ if errorlevel 1 (
 echo [OK] Core dependencies installed
 echo.
 
-REM Install the VigilantEye package itself
-echo Installing VigilantEye package...
-pip install -e . >nul 2>&1
+REM Install the VigilantEye package itself (system-wide)
+echo [4/4] Installing VigilantEye package system-wide...
+python -m pip install -e . >nul 2>&1
 if errorlevel 1 (
     echo [WARNING] VigilantEye package installation had issues
+    echo Try running as Administrator or use: python -m pip install --user -e .
 ) else (
-    echo [OK] VigilantEye package installed
+    echo [OK] VigilantEye package installed system-wide
+    echo [OK] You can now use 'vigilanteye' or 'vg' commands from anywhere
 )
 echo.
 
@@ -121,8 +97,12 @@ echo ================================
 echo.
 echo Next steps:
 echo 1. Edit .env with your API keys
-echo 2. Activate: .venv\Scripts\activate.bat
-echo 3. Test: vigilanteye 8.8.8.8
-echo 4. Dashboard: streamlit run dashboard.py
+echo 2. Test the command: vigilanteye 8.8.8.8
+echo    Or use the short alias: vg 8.8.8.8
+echo 3. Dashboard: streamlit run dashboard.py
+echo.
+echo Note: If 'vigilanteye' or 'vg' command is not found:
+echo   - Restart your terminal/command prompt
+echo   - Or add Python Scripts folder to your PATH
 echo.
 pause

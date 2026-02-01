@@ -1,2 +1,3 @@
 [console_scripts]
+vg = core.runner:main
 vigilanteye = core.runner:main

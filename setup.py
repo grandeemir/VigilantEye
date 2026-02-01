@@ -15,6 +15,7 @@ setup(
     entry_points={
         "console_scripts": [
             "vigilanteye=core.runner:main",
+            "vg=core.runner:main",
         ],
     },
     author="grandeemir",
